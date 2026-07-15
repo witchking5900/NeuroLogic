@@ -1,0 +1,139 @@
+const dictionary = {
+  // --- Acronyms & Classifications ---
+  "UMN": "ზედა მოტორული ნეირონი",
+  "LMN": "ქვედა მოტორული ნეირონი",
+  "TRACT": "გამტარი გზა",
+  "BRAINSTEM": "ტვინის ღერო",
+  "CRANIAL": "კრანიალური",
+  "CN": "კრანიალური ნერვი",
+  "MOTOR": "მოტორული",
+  "DCML": "უკანა სვეტი (DCML)",
+  "STT": "სპინოთალამური (STT)",
+  "SENSORY_SHARED": "საერთო სენსორული",
+  "EFFECTOR": "ეფექტორი",
+
+  // --- UI Elements ---
+  "Neural Hardware Map": "ნერვული სისტემის რუკა",
+  "Clinical Telemetry": "კლინიკური ტელემეტრია",
+  "CEREBRUM": "დიდი ტვინი და დიენცეფალონი",
+  "BRAINSTEM (Midbrain, Pons, Medulla)": "ტვინის ღერო (შუა ტვინი, ხიდი, მოგრძო ტვინი)",
+  "SPINAL CORD": "ზურგის ტვინი (გამტარი გზები)",
+  "PERIPHERY": "პერიფერიული ნერვული სისტემა",
+  "INITIATE REPAIR PROTOCOL": "აღდგენის პროტოკოლის გაშვება",
+  "[ LESION ]": "[ დაზიანება ]",
+  "[ OFFLINE ]": "[ გათიშული ]",
+  "Left Side Deficits": "მარცხენა მხარის დეფიციტები",
+  "Right Side Deficits": "მარჯვენა მხარის დეფიციტები",
+  // --- Terminal Logs ---
+  "TACTICAL TERMINAL LOG": "ტაქტიკური ტერმინალის ჟურნალი",
+  "SYSTEM: Boot sequence complete.": "სისტემა: ჩატვირთვის პროცესი დასრულებულია.",
+  "CRITICAL: Artery occluded": "კრიტიკული: არტერიის ოკლუზია -",
+  "SYSTEM: Artery reperfused": "სისტემა: სისხლძარღვოვანი რეპერფუზია -",
+  "LESION: Node severed": "დაზიანება: კვანძი გათიშულია -",
+  "SYSTEM: Node reconnected": "სისტემა: კვანძი აღდგენილია -",
+  "SYSTEM: Repair protocol initiated.": "სისტემა: აღდგენის პროტოკოლი გაშვებულია.",
+  "MISSION: SIMULATION STARTED -": "მისია: სიმულაცია დაიწყო -",
+  "STATUS: VERIFICATION SUCCESS": "სტატუსი: გადამოწმება წარმატებულია",
+  "STATUS: VERIFICATION FAILED": "სტატუსი: გადამოწმება ჩაიშალა",
+  "BIOMETRIC SCAN": "ბიომეტრიული სკანირება",
+  // --- Mission Control & Simulator ---
+  "[ SANDBOX MODE ]": "კლინიკური გამოცდა. ააწყვე ნერვული დაზიანების სქემა",
+  "Load: Weber's Syndrome": " ვებერის სინდრომი",
+  "Load: Brown-Séquard": " ბროუნ-სეკარის სინდრომი",
+  "Load: Bell's Palsy": " ბელის დამბლა",
+  "VERIFY LESION": "დაზიანების გადამოწმება",
+  "MISSION ACCOMPLISHED": "მისია შესრულებულია",
+  "PATIENT DECEASED (INCORRECT)": "პაციენტი დაიღუპა (არასწორია)",
+
+  // --- Node Labels (Left) ---
+  "Left Motor Cortex": "მარცხენა მოტორული ქერქი",
+  "Left Thalamus": "მარცხენა თალამუსი / სენსორული ქერქი",
+  "Left Midbrain": "მარცხენა შუა ტვინი",
+  "Left CN III (Oculomotor)": "მარცხენა III ნერვი (თვალის მამოძრავებელი)",
+  "Left Pons": "მარცხენა ხიდი",
+  "Left CN VII (Facial)": "მარცხენა VII ნერვი (სახის)",
+  "Left Medulla": "მარცხენა მოგრძო ტვინი",
+  "Left CN XII (Hypoglossal)": "მარცხენა XII ნერვი (ენისქვეშა)",
+  "Left Corticospinal": "მარცხენა კორტიკოსპინალური ტრაქტი",
+  "Left Dorsal Column": "მარცხენა უკანა სვეტი (DCML)",
+  "Left Spinothalamic": "მარცხენა სპინოთალამური ტრაქტი",
+  "Left Peripheral Nerve": "მარცხენა პერიფერიული ნერვი / LMN",
+  "Left Dorsal Root": "მარცხენა დორსალური ფესვი / განგლიონი",
+
+  // --- Node Labels (Right) ---
+  "Right Motor Cortex": "მარჯვენა მოტორული ქერქი",
+  "Right Thalamus": "მარჯვენა თალამუსი / სენსორული ქერქი",
+  "Right Midbrain": "მარჯვენა შუა ტვინი",
+  "Right CN III (Oculomotor)": "მარჯვენა III ნერვი (თვალის მამოძრავებელი)",
+  "Right Pons": "მარჯვენა ხიდი",
+  "Right CN VII (Facial)": "მარჯვენა VII ნერვი (სახის)",
+  "Right Medulla": "მარჯვენა მოგრძო ტვინი",
+  "Right CN XII (Hypoglossal)": "მარჯვენა XII ნერვი (ენისქვეშა)",
+  "Right Corticospinal": "მარჯვენა კორტიკოსპინალური ტრაქტი",
+  "Right Dorsal Column": "მარჯვენა უკანა სვეტი (DCML)",
+  "Right Spinothalamic": "მარჯვენა სპინოთალამური ტრაქტი",
+  "Right Peripheral Nerve": "მარჯვენა პერიფერიული ნერვი / LMN",
+  "Right Dorsal Root": "მარჯვენა დორსალური ფესვი / განგლიონი",
+
+  // --- Telemetry Keys ---
+  "cranial I I I": "III ნერვი (ოკულომოტორული)", 
+  "cranial V I I": "VII ნერვი (სახის)",
+  "cranial X I I": "XII ნერვი (ენისქვეშა)",
+  "motor": "მოტორული ფუნქცია",
+  "reflexes": "რეფლექსები",
+  "paralysis": "დამბლა",
+  "proprioception": "პროპრიოცეფცია / ვიბრაცია",
+  "pain Temp": "ტკივილი / ტემპერატურა",
+// --- Vascular Network ---
+  "VASCULAR NETWORK": "სისხლძარღვოვანი ქსელი",
+  "Left MCA": "მარცხენა შუა არტერია (MCA)",
+  "Right MCA": "მარჯვენა შუა არტერია (MCA)",
+  "Left PCA": "მარცხენა უკანა არტერია (PCA)",
+  "Right PCA": "მარჯვენა უკანა არტერია (PCA)",
+  "Left Basilar Branches": "მარცხენა ბაზილარული ტოტები",
+  "Right Basilar Branches": "მარჯვენა ბაზილარული ტოტები",
+  "Left PICA / Vertebral": "მარცხენა PICA / ხერხემლის",
+  "Right PICA / Vertebral": "მარჯვენა PICA / ხერხემლის",
+  "Anterior Spinal Artery (ASA)": "წინა სპინალური არტერია (ASA)",
+  "[ OCCLUDED ]": "[ ოკლუზია ]",
+  "[ ISCHEMIC ]": "[ იშემია ]",
+  "ARTERY": "არტერია",
+
+  // --- New Missions ---
+  "Load: Left MCA Ischemia": " მარცხენა MCA იშემია",
+  "Load: ASA Syndrome": " ASA სინდრომი (ზურგის ტვინი)",
+  // --- Telemetry Values ---
+  "Normal": "ნორმა",
+  "None": "არ არის",
+  "Intact": "შენარჩუნებულია",
+  "Spastic (↑)": "სპასტიური (↑)",
+  "Flaccid (↓)": "დუნე (↓)",
+  "Hyperreflexia (↑)": "ჰიპერრეფლექსია (↑)",
+  "Areflexia (↓)": "არეფლექსია (↓)",
+  "Anesthesia (↓)": "ანესთეზია (↓)",
+  "Oculomotor Palsy (↓)": "ოკულომოტორული დამბლა (↓)",
+  "Facial Droop (↓)": "სახის დამბლა / ასიმეტრია (↓)",
+  "Tongue Deviation (↓)": "ენის გადახრა (↓)",
+  "Spastic": "სპასტიური დამბლა",
+  "Flaccid": "დუნე დამბლა",
+
+  // --- Tooltips / Explanations ---
+  "SYSTEM NOMINAL: Pathway operational.": "სისტემა ნორმაშია: ნერვული გზა ფუნქციონირებს შეფერხების გარეშე.",
+  "Signal disruption detected.": "დაფიქსირდა სიგნალის დარღვევა.",
+  "PATHOPHYSIOLOGY: UMN lesion removes descending inhibitory control. Muscle spindles become hypersensitive, causing hypertonia.": "პათოფიზიოლოგია: UMN დაზიანება ხსნის დაღმავალ ინჰიბიტორულ კონტროლს. კუნთის თითისტარები ხდება ჰიპერსენსიტიური, რაც იწვევს ჰიპერტონიას.",
+  "PATHOPHYSIOLOGY: LMN lesion severs the final common pathway. The muscle is completely disconnected (Flaccid).": "პათოფიზიოლოგია: LMN დაზიანება წყვეტს საბოლოო საერთო გზას. კუნთი სრულად კარგავს ინერვაციას (დუნე დამბლა).",
+  "PATHOPHYSIOLOGY: Without UMN modulation, the localized spinal reflex arc is violently hypersensitive.": "პათოფიზიოლოგია: UMN მოდულაციის გარეშე, ლოკალური სპინალური რეფლექსური რკალი ხდება ზედმეტად მგრძნობიარე (ჰიპერრეფლექსია).",
+  "PATHOPHYSIOLOGY: The reflex arc is physically shattered.": "პათოფიზიოლოგია: რეფლექსური რკალი ფიზიკურად გაწყვეტილია (არეფლექსია).",
+  "PATHOPHYSIOLOGY: The DCML tract is severed. Somatosensory cortex is blind to joint position and vibration.": "პათოფიზიოლოგია: DCML ტრაქტი დაზიანებულია. სომატოსენსორული ქერქი ვერ აღიქვამს სახსრის პოზიციასა და ვიბრაციას.",
+  "PATHOPHYSIOLOGY: The STT is severed. Nociceptive and thermoreceptive action potentials are blocked.": "პათოფიზიოლოგია: სპინოთალამური ტრაქტი დაზიანებულია. ტკივილისა და ტემპერატურის იმპულსები ბლოკირებულია.",
+  "PATHOPHYSIOLOGY: LMN or midbrain nucleus damage. Unopposed CN IV and VI pull the eye down and out. Loss of parasympathetics causes mydriasis (blown pupil), and levator palpebrae paralysis causes ptosis.": "პათოფიზიოლოგია: შუა ტვინის ბირთვის ან LMN დაზიანება. თვალი მიმართულია ქვემოთ და გარეთ. აღინიშნება პტოზი და მიდრიაზი (გუგის გაფართოება).",
+  "PATHOPHYSIOLOGY: LMN or pontine nucleus damage. Flaccid paralysis of the entire ipsilateral half of the face (Bell's palsy pattern), as opposed to a UMN lesion which spares the forehead.": "პათოფიზიოლოგია: ხიდის ბირთვის ან LMN დაზიანება. სახის შესაბამისი ნახევრის სრული დუნე დამბლა (ბელის დამბლის ტიპი).",
+  "PATHOPHYSIOLOGY: LMN or medullary nucleus damage. Unopposed action of the contralateral genioglossus muscle pushes the tongue toward the side of the lesion when protruded.": "პათოფიზიოლოგია: მოგრძო ტვინის ბირთვის ან LMN დაზიანება. ენის გამოყოფისას იგი იხრება დაზიანების მხარეს."
+    
+};
+
+
+export const t = (text, lang) => {
+  if (lang === 'en') return text;
+  return dictionary[text] || text; 
+};
