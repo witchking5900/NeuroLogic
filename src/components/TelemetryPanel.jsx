@@ -22,6 +22,8 @@ export default function TelemetryPanel({ telemetry, lang }) {
     if (key === 'proprioception') return "PATHOPHYSIOLOGY: The DCML tract is severed. Somatosensory cortex is blind to joint position and vibration.";
     if (key === 'painTemp') return "PATHOPHYSIOLOGY: The STT is severed. Nociceptive and thermoreceptive action potentials are blocked.";
     return "Signal disruption detected.";
+    if (key === 'coordination') return "PATHOPHYSIOLOGY: Cerebellar lesion removes the ability to precisely time and scale movements, resulting in Ataxia, Dysmetria, and Intention Tremor.";
+    if (key === 'extrapyramidal') return "PATHOPHYSIOLOGY: Substantia Nigra damage causes Parkinsonian rigidity and resting tremor. Striatal damage removes inhibition, causing hyperkinesias like Chorea and Athetosis.";
   };
 
   // --- BIOMETRIC HOMUNCULUS ENGINE (SURGICALLY REPAIRED) ---

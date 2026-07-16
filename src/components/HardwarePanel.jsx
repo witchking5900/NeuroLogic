@@ -32,7 +32,17 @@ const CONNECTIONS = [
   { from: 'periph_sensory_L', to: 'cord_stt_R', tract: 'STT', color: '#ffaa00', dash: '2,4', dependsOn: ['periph_sensory_L'] },
   { from: 'cord_stt_R', to: 'thalamus_R', tract: 'STT', color: '#ffaa00', dash: '2,4', dependsOn: ['periph_sensory_L', 'cord_stt_R'] },
   { from: 'periph_sensory_R', to: 'cord_stt_L', tract: 'STT', color: '#ffaa00', dash: '2,4', dependsOn: ['periph_sensory_R'] },
-  { from: 'cord_stt_L', to: 'thalamus_L', tract: 'STT', color: '#ffaa00', dash: '2,4', dependsOn: ['periph_sensory_R', 'cord_stt_L'] }
+  { from: 'cord_stt_L', to: 'thalamus_L', tract: 'STT', color: '#ffaa00', dash: '2,4', dependsOn: ['periph_sensory_R', 'cord_stt_L'] },
+
+  // --- EXTRAPYRAMIDAL & CEREBELLAR (Dashed Neon Green) ---
+  { from: 'cortex_L', to: 'striatum_L', tract: 'EXTRAPYRAMIDAL', color: '#00ffaa', dash: '4,4', dependsOn: ['cortex_L'] },
+  { from: 'striatum_L', to: 'nigra_L', tract: 'EXTRAPYRAMIDAL', color: '#00ffaa', dash: '4,4', dependsOn: ['cortex_L', 'striatum_L'] },
+  { from: 'nigra_L', to: 'thalamus_L', tract: 'EXTRAPYRAMIDAL', color: '#00ffaa', dash: '4,4', dependsOn: ['cortex_L', 'striatum_L', 'nigra_L'] },
+  { from: 'cortex_R', to: 'striatum_R', tract: 'EXTRAPYRAMIDAL', color: '#00ffaa', dash: '4,4', dependsOn: ['cortex_R'] },
+  { from: 'striatum_R', to: 'nigra_R', tract: 'EXTRAPYRAMIDAL', color: '#00ffaa', dash: '4,4', dependsOn: ['cortex_R', 'striatum_R'] },
+  { from: 'nigra_R', to: 'thalamus_R', tract: 'EXTRAPYRAMIDAL', color: '#00ffaa', dash: '4,4', dependsOn: ['cortex_R', 'striatum_R', 'nigra_R'] },
+  { from: 'cord_dcml_L', to: 'cerebellum_L', tract: 'CEREBELLAR', color: '#00ffaa', dash: '4,4', dependsOn: ['periph_sensory_L', 'cord_dcml_L'] },
+  { from: 'cord_dcml_R', to: 'cerebellum_R', tract: 'CEREBELLAR', color: '#00ffaa', dash: '4,4', dependsOn: ['periph_sensory_R', 'cord_dcml_R'] }
 ];
 
 const UPSTREAM_DEPENDENCIES = {
@@ -45,7 +55,10 @@ const UPSTREAM_DEPENDENCIES = {
   'cord_motor_L': ['cortex_R', 'bs_midbrain_R', 'bs_pons_R', 'bs_medulla_R'],
   'periph_motor_L': ['cortex_R', 'bs_midbrain_R', 'bs_pons_R', 'bs_medulla_R', 'cord_motor_L'],
   'cord_dcml_L': ['periph_sensory_L'], 'cord_stt_R': ['periph_sensory_L'], 'thalamus_R': ['periph_sensory_L', 'cord_dcml_L', 'cord_stt_R'],
-  'cord_dcml_R': ['periph_sensory_R'], 'cord_stt_L': ['periph_sensory_R'], 'thalamus_L': ['periph_sensory_R', 'cord_dcml_R', 'cord_stt_L']
+  'cord_dcml_R': ['periph_sensory_R'], 'cord_stt_L': ['periph_sensory_R'], 'thalamus_L': ['periph_sensory_R', 'cord_dcml_R', 'cord_stt_L'],
+  // NEW EXTRAPYRAMIDAL DEPENDENCIES
+  'striatum_L': ['cortex_L'], 'nigra_L': ['cortex_L', 'striatum_L'], 'cerebellum_L': ['periph_sensory_L', 'cord_dcml_L'],
+  'striatum_R': ['cortex_R'], 'nigra_R': ['cortex_R', 'striatum_R'], 'cerebellum_R': ['periph_sensory_R', 'cord_dcml_R']
 };
 
 export default function HardwarePanel({ nodes, dispatch, lang, arteries }) {
@@ -184,15 +197,11 @@ export default function HardwarePanel({ nodes, dispatch, lang, arteries }) {
             const path = `M ${wire.x1},${wire.y1} C ${wire.x1},${midY} ${wire.x2},${midY} ${wire.x2},${wire.y2}`;
             return (
               <path key={wire.id} d={path} fill="none" 
-                // VISUAL UPGRADE: The brightest red (#ff0000) for dead wires, original color for intact ones
                 stroke={wire.isDead ? '#ff0000' : wire.color} 
-                // VISUAL UPGRADE: Dead wires are slightly thicker
                 strokeWidth={wire.isDead ? "3.5" : "2.5"} 
                 strokeDasharray={wire.dash} 
-                // VISUAL UPGRADE: Dead wires stay 100% visible, healthy wires dim slightly so the red pops
                 opacity={wire.isDead ? 1 : 0.6} 
                 style={{ 
-                  // VISUAL UPGRADE: Intense red drop-shadow to make it glow like a live threat
                   filter: wire.isDead ? 'drop-shadow(0 0 10px #ff0000)' : `drop-shadow(0 0 4px ${wire.color})`, 
                   transition: 'all 0.3s ease-in-out' 
                 }} 
@@ -212,6 +221,7 @@ export default function HardwarePanel({ nodes, dispatch, lang, arteries }) {
             rightNodes={['mca_R', 'pca_R', 'basilar_R', 'pica_R']} />
 
           <AnatomicalLevel title="CEREBRUM" leftNodes={['cortex_L', 'thalamus_L']} rightNodes={['cortex_R', 'thalamus_R']} />
+          <AnatomicalLevel title="EXTRAPYRAMIDAL & CEREBELLUM" leftNodes={['striatum_L', 'nigra_L', 'cerebellum_L']} rightNodes={['striatum_R', 'nigra_R', 'cerebellum_R']} />
           <AnatomicalLevel title="BRAINSTEM (Midbrain, Pons, Medulla)" 
             leftNodes={['bs_midbrain_L', 'cn_3_L', 'bs_pons_L', 'cn_7_L', 'bs_medulla_L', 'cn_12_L']} 
             rightNodes={['bs_midbrain_R', 'cn_3_R', 'bs_pons_R', 'cn_7_R', 'bs_medulla_R', 'cn_12_R']} />

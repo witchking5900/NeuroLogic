@@ -55,6 +55,33 @@ const dictionary = {
   "Load: Bell's Palsy": " ბელის დამბლა",
   "VERIFY LESION": "დაზიანების გადამოწმება",
   "MISSION ACCOMPLISHED": "მისია შესრულებულია",
+  // --- Extrapyramidal & Cerebellar ---
+  "Left Substantia Nigra": "მარცხენა შავი სუბსტანცია",
+  "Right Substantia Nigra": "მარჯვენა შავი სუბსტანცია",
+  "Left Striatum": "მარცხენა ზოლიანი სხეული",
+  "Right Striatum": "მარჯვენა ზოლიანი სხეული",
+  "Left Cerebellum": "მარცხენა ნათხემი",
+  "Right Cerebellum": "მარჯვენა ნათხემი",
+  "EXTRAPYRAMIDAL & CEREBELLUM": "ექსტრაპირამიდული სისტემა და ნათხემი",
+  "EXTRAPYRAMIDAL": "ექსტრაპირამიდული",
+  "CEREBELLAR": "ნათხემისმიერი",
+  // --- Sidebar & Testing Mode ---
+  "Learning Mode": "სწავლის რეჟიმი",
+  "Testing Mode": "ტესტირების რეჟიმი",
+  "Generate Random Patient": "შემთხვევითი პაციენტის გენერირება",
+  "Select Diagnosis": "აირჩიეთ დიაგნოზი",
+  "Confirm Diagnosis": "დიაგნოზის დადასტურება",
+  "Awaiting Patient Generation...": "მოლოდინის რეჟიმი: პაციენტის გენერირება...",
+  "CORRECT DIAGNOSIS": "სწორი დიაგნოზი",
+  "INCORRECT DIAGNOSIS": "არასწორი დიაგნოზი",
+  "COORD": "კოორდინაცია",
+
+  "Coordination": "კოორდინაცია",
+  "Extrapyramidal": "ექსტრაპირამიდული",
+  
+  "Ataxia & Dysmetria": "ატაქსია და დისმეტრია",
+  "Rigidity & Resting Tremor": "რიგიდობა და მოსვენების ტრემორი",
+  "Chorea & Athetosis (Hyperkinesia)": "ქორეა და ათეტოზი (ჰიპერკინეზია)",
   "PATIENT DECEASED (INCORRECT)": "პაციენტი დაიღუპა (არასწორია)",
 
   // --- Node Labels (Left) ---
