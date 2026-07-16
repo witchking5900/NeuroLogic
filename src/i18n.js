@@ -42,6 +42,11 @@ const dictionary = {
   "Brown-Séquard": "ბროუნ-სეკარის სინდრომი",
   "Left MCA Ischemia": "მარცხენა MCA იშემია",
   "ASA Syndrome": "ASA სინდრომი (ზურგის ტვინი)",
+  // --- New Auto-Simulator Conditions ---
+  "Medial Medullary Syndrome": "მედიალური მოგრძო ტვინის სინდრომი (დეჟერინი)",
+  "Thalamic Lesion": "თალამური დაზიანება",
+  "Complete Spinal Transection": "ზურგის ტვინის სრული განივი დაზიანება",
+  "Peripheral Neuropathy": "პერიფერიული ნეიროპათია (დუნე დამბლა)",
   "BIOMETRIC SCAN": "ბიომეტრიული სკანირება",
   // --- Mission Control & Simulator ---
   "[ SANDBOX MODE ]": "კლინიკური გამოცდა. ააწყვე ნერვული დაზიანების სქემა",

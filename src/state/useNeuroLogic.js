@@ -43,11 +43,19 @@ const initialNodesData = [
 ];
 
 export const MISSIONS = [
+  // Existing Conditions
   { id: "m1", title: "Weber's Syndrome", brief: "Patient presents with a down-and-out left eye, blown left pupil, and right-sided spastic hemiparesis.", solution: ["bs_midbrain_L"] },
   { id: "m2", title: "Brown-Séquard", brief: "Penetrating trauma. Left-sided spastic paralysis and loss of vibration. Right-sided loss of pain/temp.", solution: ["cord_motor_L", "cord_dcml_L", "cord_stt_L"] },
   { id: "m3", title: "Left MCA Ischemia", brief: "Ischemic stroke causing right-sided spastic hemiparesis and right-sided total sensory loss.", solution: ["mca_L"] },
-  { id: "m4", title: "ASA Syndrome", brief: "Spinal stroke. Bilateral spastic paralysis, bilateral loss of pain and temperature. Proprioception and vibration remain perfectly intact.", solution: ["asa_spine"] }
+  { id: "m4", title: "ASA Syndrome", brief: "Spinal stroke. Bilateral spastic paralysis, bilateral loss of pain and temperature. Proprioception and vibration remain perfectly intact.", solution: ["asa_spine"] },
+  
+  // NEW CONDITIONS
+  { id: "m5", title: "Medial Medullary Syndrome", brief: "Dejerine syndrome. Contralateral spastic paralysis and ipsilateral tongue deviation.", solution: ["bs_medulla_L"] },
+  { id: "m6", title: "Thalamic Lesion", brief: "Total contralateral sensory loss (pain, temperature, vibration, and proprioception) with intact motor function.", solution: ["thalamus_L"] },
+  { id: "m7", title: "Complete Spinal Transection", brief: "Bilateral spastic paralysis and total bilateral sensory loss below the level of the lesion.", solution: ["cord_motor_L", "cord_motor_R", "cord_dcml_L", "cord_dcml_R", "cord_stt_L", "cord_stt_R"] },
+  { id: "m8", title: "Peripheral Neuropathy", brief: "Severe LMN damage to the left peripheral nerves. Left-sided flaccid paralysis, areflexia, and complete sensory loss.", solution: ["periph_motor_L", "periph_sensory_L"] }
 ];
+
 
 const defaultBodyState = { motor: "Normal", reflexes: "Normal", paralysis: "None", proprioception: "Intact", painTemp: "Intact", cranialIII: "Intact", cranialVII: "Intact", cranialXII: "Intact" };
 
