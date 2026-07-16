@@ -124,33 +124,23 @@ const reducer = (state, action) => {
       nextArteries.filter(a => a.isOccluded).forEach(a => a.targets.forEach(t => occludedTargets.add(t)));
       nextNodes = nextNodes.map(n => ({ ...n, isIschemic: occludedTargets.has(n.id) }));
 
+      // CRITICAL: In PATHO testing mode, the patient's symptoms are frozen. 
+      // User clicking the map does not magically cure or change the patient.
+      const nextTelemetry = state.gameMode === 'TESTING_PATHO' ? state.telemetry : calculateTelemetry(nextNodes);
+
       return { 
-        ...state, nodes: nextNodes, arteries: nextArteries, 
-        telemetry: calculateTelemetry(nextNodes), missionStatus: state.gameMode === 'SIMULATOR' ? 'PENDING' : 'IDLE'
+        ...state, nodes: nextNodes, arteries: nextArteries, telemetry: nextTelemetry, missionStatus: 'PENDING', feedback: null 
       };
     }
-    case 'AUTO_SIMULATE': 
-    case 'GENERATE_RANDOM': {
-      let mission;
-      if (action.type === 'GENERATE_RANDOM') {
-        const randomIndex = Math.floor(Math.random() * MISSIONS.length);
-        mission = MISSIONS[randomIndex];
-      } else {
-        mission = MISSIONS.find(m => m.id === action.payload);
-      }
-      
-      if (!mission) return state;
-
+    
+    case 'GENERATE_RANDOM_DIAGNOSIS': {
+      const mission = MISSIONS[Math.floor(Math.random() * MISSIONS.length)];
       let nextNodes = [...initialNodesData];
       let nextArteries = [...initialArteries];
 
       mission.solution.forEach(id => {
-        const isArtery = nextArteries.some(a => a.id === id);
-        if (isArtery) {
-          nextArteries = nextArteries.map(a => a.id === id ? { ...a, isOccluded: true } : a);
-        } else {
-          nextNodes = nextNodes.map(n => n.id === id ? { ...n, isDamaged: true } : n);
-        }
+        if (nextArteries.some(a => a.id === id)) nextArteries = nextArteries.map(a => a.id === id ? { ...a, isOccluded: true } : a);
+        else nextNodes = nextNodes.map(n => n.id === id ? { ...n, isDamaged: true } : n);
       });
 
       const occludedTargets = new Set();
@@ -158,16 +148,69 @@ const reducer = (state, action) => {
       nextNodes = nextNodes.map(n => ({ ...n, isIschemic: occludedTargets.has(n.id) }));
 
       return { 
-        ...initialState, nodes: nextNodes, arteries: nextArteries, 
-        telemetry: calculateTelemetry(nextNodes), 
-        gameMode: action.type === 'GENERATE_RANDOM' ? "TESTING" : "DEMO", 
-        activeMission: mission 
+        ...initialState, nodes: nextNodes, arteries: nextArteries, telemetry: calculateTelemetry(nextNodes), 
+        gameMode: "TESTING_DIAGNOSIS", activeMission: mission, missionStatus: 'PENDING', feedback: null 
       };
     }
+
+    case 'GENERATE_RANDOM_PATHO': {
+      let numLesions;
+      if (!action.payload || action.payload === 'RANDOM') {
+        numLesions = Math.floor(Math.random() * 3) + 1; // Randomly 1 to 3
+      } else {
+        numLesions = parseInt(action.payload, 10);
+      }
+      
+      const allIds = [...initialArteries.map(a=>a.id), ...initialNodesData.map(n=>n.id)];
+      const targetIds = allIds.sort(() => 0.5 - Math.random()).slice(0, numLesions);
+
+      let targetNodes = [...initialNodesData];
+      let targetArteries = [...initialArteries];
+
+      targetIds.forEach(id => {
+        if (targetArteries.some(a => a.id === id)) targetArteries = targetArteries.map(a => a.id === id ? { ...a, isOccluded: true } : a);
+        else targetNodes = targetNodes.map(n => n.id === id ? { ...n, isDamaged: true } : n);
+      });
+      
+      const occludedTargets = new Set();
+      targetArteries.filter(a => a.isOccluded).forEach(a => a.targets.forEach(t => occludedTargets.add(t)));
+      targetNodes = targetNodes.map(n => ({ ...n, isIschemic: occludedTargets.has(n.id) }));
+
+      // Calculate the true patient symptoms based on the secret target map
+      const trueTelemetry = calculateTelemetry(targetNodes);
+
+      return {
+        ...initialState, // THIS KEEPS THE MAP COMPLETELY CLEAN/BLUE
+        telemetry: trueTelemetry, // THIS LOCKS IN THE PATIENT'S SYMPTOMS
+        gameMode: "TESTING_PATHO", targetSolution: targetIds, missionStatus: 'PENDING', feedback: null
+      };
+    }
+
     case 'SUBMIT_DIAGNOSIS': {
       const isCorrect = state.activeMission?.id === action.payload;
-      return { ...state, missionStatus: isCorrect ? 'SUCCESS' : 'FAILED' };
+      const userMission = MISSIONS.find(m => m.id === action.payload);
+      let feedback = null;
+      if (!isCorrect) {
+        feedback = { type: 'DIAGNOSIS', userSelection: userMission ? userMission.title : "None", correctSelection: state.activeMission.title, reason: state.activeMission.brief };
+      }
+      return { ...state, missionStatus: isCorrect ? 'SUCCESS' : 'FAILED', feedback };
     }
+
+    case 'SUBMIT_PATHO': {
+      const userSelectedIds = [ ...state.nodes.filter(n => n.isDamaged).map(n => n.id), ...state.arteries.filter(a => a.isOccluded).map(a => a.id) ].sort();
+      const targetIds = [...state.targetSolution].sort();
+      const isCorrect = JSON.stringify(userSelectedIds) === JSON.stringify(targetIds);
+      
+      let feedback = null;
+      if (!isCorrect) {
+          const allItems = [...initialNodesData, ...initialArteries];
+          const getUserLabels = userSelectedIds.map(id => allItems.find(x => x.id === id)?.label).join(", ");
+          const getTargetLabels = targetIds.map(id => allItems.find(x => x.id === id)?.label).join(", ");
+          feedback = { type: 'PATHO', userSelection: getUserLabels || "Nothing Selected", correctSelection: getTargetLabels || "Nothing Selected" };
+      }
+      return { ...state, missionStatus: isCorrect ? 'SUCCESS' : 'FAILED', feedback };
+    }
+
     case 'HEAL_SYSTEM': 
       return initialState;
     default: 

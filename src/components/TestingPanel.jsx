@@ -7,25 +7,24 @@ export default function TestingPanel({ state, dispatch, lang }) {
 
   const handleGenerate = () => {
     setSelectedDiagnosis("");
-    dispatch({ type: 'GENERATE_RANDOM' });
+    dispatch({ type: 'GENERATE_RANDOM_DIAGNOSIS' });
   };
 
-  const isTestingActive = state.gameMode === 'TESTING' && state.activeMission;
+  const isTestingActive = state.gameMode === 'TESTING_DIAGNOSIS' && state.activeMission;
 
   return (
     <div style={{ flex: 1.2, padding: '40px', backgroundColor: '#050505', borderRight: '2px solid #222', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-      
       <div style={{ backgroundColor: '#0d1117', border: '1px solid #333', borderRadius: '8px', padding: '40px', textAlign: 'center' }}>
         
         <h2 style={{ color: '#fff', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '30px' }}>
-          {t("Testing Mode", lang)}
+          {t("Test: Diagnosis", lang)}
         </h2>
 
         <button 
           onClick={handleGenerate}
-          style={{ padding: '16px 30px', backgroundColor: '#00d4ff', color: '#000', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', fontSize: '16px', letterSpacing: '1px', width: '100%', marginBottom: '40px', boxShadow: '0 0 15px rgba(0, 212, 255, 0.2)' }}
+          style={{ padding: '16px 30px', backgroundColor: '#b800ff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', fontSize: '15px', letterSpacing: '1px', width: '100%', marginBottom: '40px', boxShadow: '0 0 15px rgba(184, 0, 255, 0.3)' }}
         >
-          {t("Generate Random Patient", lang)}
+          {t("Generate Random Patient (Diagnosis)", lang)}
         </button>
 
         {!isTestingActive ? (
@@ -48,7 +47,7 @@ export default function TestingPanel({ state, dispatch, lang }) {
             <button 
               onClick={() => dispatch({ type: 'SUBMIT_DIAGNOSIS', payload: selectedDiagnosis })}
               disabled={!selectedDiagnosis}
-              style={{ padding: '14px', backgroundColor: selectedDiagnosis ? '#ffaa00' : '#222', color: selectedDiagnosis ? '#000' : '#555', border: 'none', borderRadius: '4px', cursor: selectedDiagnosis ? 'pointer' : 'not-allowed', fontWeight: 'bold', fontSize: '15px' }}
+              style={{ padding: '14px', backgroundColor: selectedDiagnosis ? '#00d4ff' : '#222', color: selectedDiagnosis ? '#000' : '#555', border: 'none', borderRadius: '4px', cursor: selectedDiagnosis ? 'pointer' : 'not-allowed', fontWeight: 'bold', fontSize: '15px' }}
             >
               {t("Confirm Diagnosis", lang)}
             </button>
@@ -59,9 +58,20 @@ export default function TestingPanel({ state, dispatch, lang }) {
               </div>
             )}
             
-            {state.missionStatus === 'FAILED' && (
-              <div style={{ marginTop: '20px', padding: '15px', backgroundColor: 'rgba(255, 77, 77, 0.1)', color: '#ff4d4d', border: '1px solid #ff4d4d', borderRadius: '4px', fontWeight: 'bold', letterSpacing: '1px' }}>
-                {t("INCORRECT DIAGNOSIS", lang)}
+            {state.missionStatus === 'FAILED' && state.feedback && (
+              <div style={{ marginTop: '20px', padding: '20px', backgroundColor: '#1a0a0a', border: '1px solid #ff4d4d', borderRadius: '4px', textAlign: 'left', lineHeight: '1.6' }}>
+                <div style={{ color: '#ff4d4d', fontWeight: 'bold', marginBottom: '10px', fontSize: '16px', borderBottom: '1px solid #333', paddingBottom: '10px' }}>
+                  ❌ {t("INCORRECT DIAGNOSIS", lang)}
+                </div>
+                <div style={{ color: '#aaa', fontSize: '13px' }}>
+                  <span style={{ color: '#ffaa00' }}>{t("Your diagnosis:", lang)}</span> {t(state.feedback.userSelection, lang)}
+                </div>
+                <div style={{ color: '#fff', fontSize: '13px', marginTop: '5px' }}>
+                  <span style={{ color: '#00ff00' }}>{t("Correct diagnosis:", lang)}</span> {t(state.feedback.correctSelection, lang)}
+                </div>
+                <div style={{ color: '#00d4ff', fontSize: '13px', marginTop: '15px', fontStyle: 'italic' }}>
+                  <span style={{ color: '#888', fontStyle: 'normal' }}>{t("Reasoning:", lang)}</span> {t(state.feedback.reason, lang)}
+                </div>
               </div>
             )}
           </div>

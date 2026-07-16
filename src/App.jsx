@@ -8,7 +8,7 @@ import Sidebar from './components/Sidebar';
 export default function App() {
   const [state, dispatch] = useNeuroLogic();
   const [lang, setLang] = useState('ka'); 
-  const [view, setView] = useState('LEARNING'); // 'LEARNING' | 'TESTING'
+  const [view, setView] = useState('LEARNING'); // 'LEARNING' | 'TESTING_DIAGNOSIS' | 'TESTING_PATHO'
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -29,9 +29,13 @@ export default function App() {
     );
   }
 
+  // Auto-heal the system if the user switches modes mid-exam
+  useEffect(() => {
+    dispatch({ type: 'HEAL_SYSTEM' });
+  }, [view, dispatch]);
+
   return (
     <>
-      {/* THE SCROLLBAR KILLER */}
       <style>{`
         ::-webkit-scrollbar { width: 0px; background: transparent; }
         * { scrollbar-width: none; }
@@ -39,19 +43,16 @@ export default function App() {
       
       <div style={{ backgroundColor: '#0a0a0a', height: '100vh', display: 'flex', fontFamily: 'monospace', margin: 0, overflow: 'hidden' }}>
         
-        {/* Left Navigation */}
         <Sidebar view={view} setView={setView} lang={lang} setLang={setLang} />
         
-        {/* Dynamic Main Workspace */}
         <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
           
-          {view === 'LEARNING' ? (
-            <HardwarePanel nodes={state.nodes} arteries={state.arteries} dispatch={dispatch} lang={lang} />
-          ) : (
-            <TestingPanel state={state} dispatch={dispatch} lang={lang} />
-          )}
+          {/* CRITICAL FIX: Passing isExamMode to the HardwarePanel */}
+          {view === 'LEARNING' && <HardwarePanel nodes={state.nodes} arteries={state.arteries} dispatch={dispatch} lang={lang} state={state} isExamMode={false} />}
+          {view === 'TESTING_PATHO' && <HardwarePanel nodes={state.nodes} arteries={state.arteries} dispatch={dispatch} lang={lang} state={state} isExamMode={true} />}
+          
+          {view === 'TESTING_DIAGNOSIS' && <TestingPanel state={state} dispatch={dispatch} lang={lang} />}
 
-          {/* Telemetry is omnipresent in both modes */}
           <TelemetryPanel telemetry={state.telemetry} lang={lang} />
           
         </div>
