@@ -108,6 +108,38 @@ const reducer = (state, action) => {
         ...initialState, gameMode: "SIMULATOR", activeMission: mission, missionStatus: "PENDING"
       };
     }
+    case 'AUTO_SIMULATE': {
+      const mission = MISSIONS.find(m => m.id === action.payload);
+      if (!mission) return state;
+
+      // 1. Reset the board to a clean state
+      let nextNodes = [...initialNodesData];
+      let nextArteries = [...initialArteries];
+
+      // 2. Automatically apply the damage/occlusion from the mission solution
+      mission.solution.forEach(id => {
+        const isArtery = nextArteries.some(a => a.id === id);
+        if (isArtery) {
+          nextArteries = nextArteries.map(a => a.id === id ? { ...a, isOccluded: true } : a);
+        } else {
+          nextNodes = nextNodes.map(n => n.id === id ? { ...n, isDamaged: true } : n);
+        }
+      });
+
+      // 3. Cascade Ischemia
+      const occludedTargets = new Set();
+      nextArteries.filter(a => a.isOccluded).forEach(a => a.targets.forEach(t => occludedTargets.add(t)));
+      nextNodes = nextNodes.map(n => ({ ...n, isIschemic: occludedTargets.has(n.id) }));
+
+      return { 
+        ...initialState, 
+        nodes: nextNodes, 
+        arteries: nextArteries, 
+        telemetry: calculateTelemetry(nextNodes), 
+        gameMode: "DEMO", 
+        activeMission: mission 
+      };
+    }
     case 'VERIFY_SOLUTION': {
       const activeIds = [...state.nodes.filter(n => n.isDamaged).map(n => n.id), ...state.arteries.filter(a => a.isOccluded).map(a => a.id)].sort();
       const solutionIds = [...state.activeMission.solution].sort();

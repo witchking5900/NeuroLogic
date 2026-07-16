@@ -35,6 +35,13 @@ const dictionary = {
   "MISSION: SIMULATION STARTED -": "მისია: სიმულაცია დაიწყო -",
   "STATUS: VERIFICATION SUCCESS": "სტატუსი: გადამოწმება წარმატებულია",
   "STATUS: VERIFICATION FAILED": "სტატუსი: გადამოწმება ჩაიშალა",
+  // --- Auto-Simulator ---
+  "Simulate Clinical Condition": "კლინიკური მდგომარეობის სიმულაცია",
+  "Select Condition": "აირჩიეთ მდგომარეობა",
+  "Weber's Syndrome": "ვებერის სინდრომი",
+  "Brown-Séquard": "ბროუნ-სეკარის სინდრომი",
+  "Left MCA Ischemia": "მარცხენა MCA იშემია",
+  "ASA Syndrome": "ASA სინდრომი (ზურგის ტვინი)",
   "BIOMETRIC SCAN": "ბიომეტრიული სკანირება",
   // --- Mission Control & Simulator ---
   "[ SANDBOX MODE ]": "კლინიკური გამოცდა. ააწყვე ნერვული დაზიანების სქემა",
