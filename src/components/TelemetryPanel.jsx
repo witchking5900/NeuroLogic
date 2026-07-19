@@ -5,6 +5,10 @@ export default function TelemetryPanel({ telemetry, lang }) {
   const [activeTooltip, setActiveTooltip] = useState(null);
 
   const getStatusStyle = (val) => {
+    // --- NEW: Extrapyramidal & Cerebellar (Neon Green) ---
+    if (val.includes('Rigidity') || val.includes('Tremor') || val.includes('Chorea') || val.includes('Athetosis') || val.includes('Ataxia') || val.includes('Dysmetria') || val.includes('Hyperkinesia')) {
+      return { color: '#00ffaa', shadow: '0 0 8px rgba(0, 255, 170, 0.4)' }; 
+    }
     if (val.includes('↓') || val.includes('Flaccid') || val.includes('Anesthesia') || val.includes('Droop') || val.includes('Palsy') || val.includes('Deviation')) {
       return { color: '#ff4d4d', shadow: '0 0 8px rgba(255, 77, 77, 0.4)' }; 
     }
@@ -21,9 +25,11 @@ export default function TelemetryPanel({ telemetry, lang }) {
     if (key === 'reflexes') return value.includes('Hyperreflexia') ? "PATHOPHYSIOLOGY: Without UMN modulation, the localized spinal reflex arc is violently hypersensitive." : "PATHOPHYSIOLOGY: The reflex arc is physically shattered.";
     if (key === 'proprioception') return "PATHOPHYSIOLOGY: The DCML tract is severed. Somatosensory cortex is blind to joint position and vibration.";
     if (key === 'painTemp') return "PATHOPHYSIOLOGY: The STT is severed. Nociceptive and thermoreceptive action potentials are blocked.";
-    return "Signal disruption detected.";
     if (key === 'coordination') return "PATHOPHYSIOLOGY: Cerebellar lesion removes the ability to precisely time and scale movements, resulting in Ataxia, Dysmetria, and Intention Tremor.";
     if (key === 'extrapyramidal') return "PATHOPHYSIOLOGY: Substantia Nigra damage causes Parkinsonian rigidity and resting tremor. Striatal damage removes inhibition, causing hyperkinesias like Chorea and Athetosis.";
+    
+    // CRITICAL FIX: Moved default return to the very bottom so it doesn't block the logic above
+    return "Signal disruption detected."; 
   };
 
   // --- BIOMETRIC HOMUNCULUS ENGINE (SURGICALLY REPAIRED) ---
@@ -34,9 +40,13 @@ export default function TelemetryPanel({ telemetry, lang }) {
   };
 
   const getBodyColor = (data) => {
-    const bodyVals = [data.motor, data.reflexes, data.paralysis, data.proprioception, data.painTemp];
+    const bodyVals = [data.motor, data.reflexes, data.paralysis, data.proprioception, data.painTemp, data.coordination, data.extrapyramidal];
     if (bodyVals.some(v => v.includes('↓') || v.includes('Flaccid') || v.includes('Anesthesia'))) return '#ff4d4d'; // Red (Severe Deficit)
     if (bodyVals.some(v => v.includes('↑') || v.includes('Spastic'))) return '#ffaa00'; // Orange (UMN Warning)
+    
+    // --- NEW: Extrapyramidal & Cerebellar affect Homunculus color ---
+    if (bodyVals.some(v => v.includes('Rigidity') || v.includes('Ataxia') || v.includes('Chorea') || v.includes('Tremor') || v.includes('Dysmetria') || v.includes('Hyperkinesia'))) return '#00ffaa'; 
+    
     return '#00d4ff'; // Blue (Nominal)
   };
 
