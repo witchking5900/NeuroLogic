@@ -199,13 +199,19 @@ const reducer = (state, action) => {
     case 'SUBMIT_PATHO': {
       const userSelectedIds = [ ...state.nodes.filter(n => n.isDamaged).map(n => n.id), ...state.arteries.filter(a => a.isOccluded).map(a => a.id) ].sort();
       const targetIds = [...state.targetSolution].sort();
-      const isCorrect = JSON.stringify(userSelectedIds) === JSON.stringify(targetIds);
+      
+      // THE CLINICAL UPGRADE: We calculate the telemetry of the student's current map,
+      // and compare it to the frozen target patient. 
+      const userTelemetry = calculateTelemetry(state.nodes);
+      const isCorrect = JSON.stringify(userTelemetry) === JSON.stringify(state.telemetry);
       
       let feedback = null;
       if (!isCorrect) {
           const allItems = [...initialNodesData, ...initialArteries];
           const getUserLabels = userSelectedIds.map(id => allItems.find(x => x.id === id)?.label).join(", ");
           const getTargetLabels = targetIds.map(id => allItems.find(x => x.id === id)?.label).join(", ");
+          // We show them what the computer originally generated so they can learn from it, 
+          // even if there were multiple ways to get the wrong answer.
           feedback = { type: 'PATHO', userSelection: getUserLabels || "Nothing Selected", correctSelection: getTargetLabels || "Nothing Selected" };
       }
       return { ...state, missionStatus: isCorrect ? 'SUCCESS' : 'FAILED', feedback };
