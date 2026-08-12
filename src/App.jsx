@@ -10,6 +10,7 @@ export default function App() {
   const [lang, setLang] = useState('ka'); 
   const [view, setView] = useState('LEARNING'); // 'LEARNING' | 'TESTING_DIAGNOSIS' | 'TESTING_PATHO'
   const [isMobile, setIsMobile] = useState(false);
+  const [mobileWarningDismissed, setMobileWarningDismissed] = useState(false);
 
   useEffect(() => {
     const checkViewport = () => setIsMobile(window.innerWidth < 768);
@@ -18,21 +19,33 @@ export default function App() {
     return () => window.removeEventListener('resize', checkViewport);
   }, []);
 
-  if (isMobile) {
-    return (
-      <div style={{ backgroundColor: '#0a0a0a', height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#fff', padding: '40px', textAlign: 'center' }}>
-        <h2 style={{ color: '#00d4ff', marginBottom: '20px' }}>NEUROLOGIC OS</h2>
-        <p style={{ fontSize: '16px', color: '#aaa', maxWidth: '400px' }}>
-          {lang === 'ka' ? "სიმულატორი ოპტიმიზებულია მხოლოდ დესკტოპისთვის ან ტაბლეტისთვის. გთხოვთ გამოიყენოთ კომპიუტერი კლინიკური სიზუსტისთვის." : "This simulator is optimized for desktop and tablet use only. Please access on a larger screen for clinical precision."}
-        </p>
-      </div>
-    );
-  }
-
   // Auto-heal the system if the user switches modes mid-exam
   useEffect(() => {
     dispatch({ type: 'HEAL_SYSTEM' });
   }, [view, dispatch]);
+
+  if (isMobile && !mobileWarningDismissed) {
+    return (
+      <div style={{ backgroundColor: '#0a0a0a', height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#fff', padding: '40px', textAlign: 'center', fontFamily: 'monospace' }}>
+        <h2 style={{ color: '#00d4ff', marginBottom: '30px', letterSpacing: '2px' }}>NEUROLOGIC OS</h2>
+        
+        <p style={{ fontSize: '14px', color: '#aaa', maxWidth: '400px', marginBottom: '15px', lineHeight: '1.6' }}>
+          <span style={{color: '#ffaa00', fontWeight: 'bold'}}>[ KA ]</span> აპლიკაცია არ არის ადაპტირებული მცირე ეკრანებისთვის. საუკეთესო გამოცდილებისთვის გამოიყენეთ კომპიუტერი ან ლეპტოპი (რაც უფრო დიდია ეკრანი, მით უკეთესია).
+        </p>
+
+        <p style={{ fontSize: '14px', color: '#aaa', maxWidth: '400px', marginBottom: '40px', lineHeight: '1.6' }}>
+          <span style={{color: '#ffaa00', fontWeight: 'bold'}}>[ EN ]</span> This app is not adapted for smaller screens. For the best experience, use a PC or laptop (the bigger the screen, the better).
+        </p>
+
+        <button 
+          onClick={() => setMobileWarningDismissed(true)}
+          style={{ padding: '16px 32px', backgroundColor: '#111', color: '#00d4ff', border: '1px solid #00d4ff', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', letterSpacing: '1px', textTransform: 'uppercase', boxShadow: '0 0 15px rgba(0, 212, 255, 0.2)', transition: 'all 0.2s ease' }}
+        >
+          გაგრძელება / Proceed
+        </button>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -47,7 +60,6 @@ export default function App() {
         
         <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
           
-          {/* CRITICAL FIX: Passing isExamMode to the HardwarePanel */}
           {view === 'LEARNING' && <HardwarePanel nodes={state.nodes} arteries={state.arteries} dispatch={dispatch} lang={lang} state={state} isExamMode={false} />}
           {view === 'TESTING_PATHO' && <HardwarePanel nodes={state.nodes} arteries={state.arteries} dispatch={dispatch} lang={lang} state={state} isExamMode={true} />}
           
